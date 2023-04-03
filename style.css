@@ -12,6 +12,13 @@ body{
     justify-content: space-around;
     
 }
+.bottom{  
+    position: absolute; bottom: 0;
+    margin-bottom: 2rem;
+}
+.card{
+    position:relative; 
+}
 .row{
     gap: 20px;
 }
@@ -33,4 +40,14 @@ body{
 .wrapper .card {
     width: calc(33% - 13px);
     height: 340px;
+}
+
+@media only screen and (max-width: 600px) {
+   .row {
+    width: 60%;
+
+   }
+   .one{
+    width: 33%;
+   }
 }
