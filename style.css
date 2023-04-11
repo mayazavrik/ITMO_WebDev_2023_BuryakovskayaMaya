@@ -22,16 +22,6 @@ body {
   gap: 20px;
 }
 
-.btn_operator {
-  border: none;
-  border-radius: 50px;
-  background-color: rgb(244, 123, 25);
-  cursor: pointer;
-
-  font-size: 30px;
-  
-}
-
 .calc_result {
   grid-column: 1 / -1;
   background-color: #434141;
@@ -41,16 +31,28 @@ body {
   padding: 10px;
 }
 
-.calc_btn {
+.calc_btn--operator {
+  border: none;
+  border-radius: 50px;
+  background-color: rgb(244, 123, 25);
+  cursor: pointer;
+
+  font-size: 30px;
+  
+}
+
+
+
+.calc_btn--digit {
   border: none;
   border-radius: 50px;
   background-color: #434141;
   color: #fff;
   cursor: pointer;
   font-size: 30px;
-  
 }
-.btn_reset {
+
+.calc_btn--reset {
   border: none;
   border-radius: 50px;
   cursor: pointer;
@@ -59,7 +61,7 @@ body {
   background-color: rgb(248, 246, 245);
 }
 
-.btn_equal {
+.calc_btn--equal {
   border: none;
   border-radius: 50px;
   background-color: #eee;
