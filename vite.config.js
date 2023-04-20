@@ -6,6 +6,7 @@ import presetWebFonts from "@unocss/preset-web-fonts";
 export default {
   plugins: [
     UnoCSS({
+      include: ['./index.html', 'main.js', './src/**/**.js'],
       presets: [presetUno(), presetIcons(), presetWebFonts({
         provider: 'google', // default provider
         fonts: {

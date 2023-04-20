@@ -14,6 +14,12 @@ class TaskPopup {
     this.#closeCallback = closeCallback;
   }
 
+  #taskTitle = '';
+
+  set taskTitle(value) {
+    this.#taskTitle = value;
+  }
+
   render() {
     const div = document.createElement('div');
     div.innerHTML = `
@@ -31,6 +37,7 @@ class TaskPopup {
               class="bg-neutral-100 p-1.5 rounded w-full border-1 border-neutral-200"
               id="inpTitle"
               type="text"
+              value = "${this.#taskTitle}"
               placeholder="e.g. Read books"
             />
           </div>
@@ -41,7 +48,7 @@ class TaskPopup {
             <input
               class="bg-neutral-100 p-1.5 rounded w-full border-1 border-neutral-200"
               type="date"
-              id="inpDate"
+              data-id="inpTitle"
               name="trip-start"
               min="2018-01-01"
             />
@@ -75,6 +82,7 @@ class TaskPopup {
 
     const domBtnClose = popup.querySelector('[data-id="btnClose"]');
     const domBtnConfirm = popup.querySelector('[data-id="btnConfirm"]');
+    const domInpTitle = popup.querySelector('[data-id="inpTitle"]');
 
     domBtnClose.onclick = () => {
       domBtnClose.onclick = null;
@@ -82,11 +90,15 @@ class TaskPopup {
       this.#closeCallback();
     };
 
+
+
+
     domBtnConfirm.onclick = () => {
-      const taskTitle = randomString(12);
+      const taskTitle = domInpTitle.value;
       const taskDate = Date.now();
       const taskTags = this.#tags[0];
       this.#confirmCallback(taskTitle, taskDate, taskTags);
+      
     };
 
     return div.children[0];
