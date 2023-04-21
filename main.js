@@ -47,7 +47,7 @@ const taskOperations = {
           taskTag,
         });
         const indexOfTask = tasks.indexOf(taskVO);
-        task.splice(indexOfTask, 1);
+        tasks.splice(indexOfTask, 1);
         domTaskColumn.removeChild(domTask);
         saveTask();
       }
@@ -104,13 +104,17 @@ domTaskColumn.onclick = (e) => {
   }
 };
 getDOM(DOM.Button.CREATE_TASK).onclick = () => {
+  console.log('> domPopupCreateTask', getDOM(DOM.Button.CREATE_TASK));
+  getDOM(DOM.Button.CREATE_TASK).addEventListener('click', () => {
+
+  })
   console.log('> domPopupCreateTask.classList');
   renderTaskPopup(
     null,
     'Create task',
     'Create',
     (taskTitle, taskDate, taskTag) => {
-      console.log('> Create task -> On Confirm');
+      console.log('> Create task -> On Confirm', taskTitle, taskDate, taskTag);
       const taskId = `task_${Date.now()}`;
       const taskVO = new TaskVO(taskId, taskTitle, taskDate, taskTag);
 
