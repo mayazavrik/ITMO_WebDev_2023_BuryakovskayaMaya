@@ -1,24 +1,53 @@
-import './style.css'
-import javascriptLogo from './javascript.svg'
-import viteLogo from '/vite.svg'
-import { setupCounter } from './counter.js'
+let BODY = document.querySelector('body');
 
-document.querySelector('#app').innerHTML = `
-  <div>
-    <a href="https://vitejs.dev" target="_blank">
-      <img src="${viteLogo}" class="logo" alt="Vite logo" />
-    </a>
-    <a href="https://developer.mozilla.org/en-US/docs/Web/JavaScript" target="_blank">
-      <img src="${javascriptLogo}" class="logo vanilla" alt="JavaScript logo" />
-    </a>
-    <h1>Hello Vite!</h1>
-    <div class="card">
-      <button id="counter" type="button"></button>
-    </div>
-    <p class="read-the-docs">
-      Click on the Vite logo to learn more
-    </p>
-  </div>
-`
+function addBlock(width, height, row) {
+  let logo = document.createElement('div');
+  logo.style.width = `${width}px`;
+  logo.style.height = `${height}px`;
+  let randomBackground = Math.floor(Math.random() * 2);
+  if (randomBackground == 1) {
+    logo.style.background = `#000`;
+  } else {
+    logo.style.background = `#eee`;
+  }
 
-setupCounter(document.querySelector('#counter'))
+  row.appendChild(logo);
+}
+
+function rows(width, height, column, counterBlocks) {
+  let row = document.createElement('div');
+  row.style.width = `${width}px`;
+  row.style.height = `${height}px`;
+  row.style.display = 'flex';
+  while (counterBlocks--) {
+    addBlock(20, 20, row);
+  }
+  let row2 = row.cloneNode(true);
+  row2.style.flexDirection = 'row-reverse';
+  column.appendChild(row);
+  column.appendChild(row2);
+}
+
+function columns(width, height, counterBlocks, block) {
+  let column = document.createElement('div');
+  column.style.width = `${width}px`;
+  column.style.height = `${height}px`;
+  column.style.display = 'flex';
+  block.appendChild(column);
+  rows(60, 20, column, counterBlocks);
+}
+
+function mainBlock(counterColumns, counterBlocks) {
+  let block = document.createElement('div');
+  BODY.appendChild(block);
+  while (counterColumns--) {
+    columns(100, 20, counterBlocks, block);
+  }
+}
+
+function AllCartoons(count) {
+  while (count--) {
+    mainBlock(8, 4);
+  }
+}
+AllCartoons(9);
