@@ -8,13 +8,13 @@ const Tags = ['Web', 'Update', 'Design', 'Content'];
 
 class TaskVO {
   static fromJSON(json) {
-    return new TaskVO(json.id, json.title, json.date, json.tag);
+    return new TaskVO(json.id, json.title, json.date, json.tags);
   }
-  constructor(id, title, date, tag) {
+  constructor(id, title, date, tags) {
     this.id = id;
     this.title = title;
     this.date = date;
-    this.tag = tag;
+    this.tags = tags;
   }
 }
 
@@ -27,12 +27,23 @@ domTemplateTask.removeAttribute('id');
 domTemplateTask.remove();
 
 const rawTasks = localStorage.getItem(KEY_LOCAL_TASKS);
+fetch('http://localhost:3000/tasks')
+.then((response) =>{
+return response.ok && response.json();
+}).then((rawTasks => {
+  if(rawTasks && rawTasks instanceof Object) {
+    console.log('json', rawTasks);
+    const serverTasks = rawTasks.map((json) => TaskVO.fromJSON(json));
+    serverTasks.forEach((taskVO) => renderTask((taskVO));
+    tasks.push(...serverTasks);
+  }
+});
 
 const tasks = rawTasks
   ? JSON.parse(rawTasks).map((json) => TaskVO.fromJSON(json))
   : [];
 tasks.forEach((taskVO) => renderTask(taskVO));
-console.log('> tasks:', tasks);
+ 
 
 const taskOperations = {
   [DOM.Template.Task.BTN_DELETE]: (taskVO, domTask) => {
@@ -40,11 +51,11 @@ const taskOperations = {
       taskVO,
       'Confirm delete ask?',
       'Delete',
-      (taskTitle, taskDate, taskTag) => {
+      (taskTitle, taskDate, taskTags) => {
         console.log('> Delete task -> On Confirm', {
           taskTitle,
           taskDate,
-          taskTag,
+          taskTags,
         });
         const indexOfTask = tasks.indexOf(taskVO);
         tasks.splice(indexOfTask, 1);
@@ -58,11 +69,11 @@ const taskOperations = {
       taskVO,
       'Update task',
       'Update',
-      (taskTitle, taskDate, taskTag) => {
+      (taskTitle, taskDate, taskTags) => {
         console.log('> Update task -> On Confirm', {
           taskTitle,
           taskDate,
-          taskTag,
+          taskTags,
         });
         taskVO.title = taskTitle;
         const domTaskUpdated = renderTask(taskVO);
@@ -113,10 +124,10 @@ getDOM(DOM.Button.CREATE_TASK).onclick = () => {
     null,
     'Create task',
     'Create',
-    (taskTitle, taskDate, taskTag) => {
-      console.log('> Create task -> On Confirm', taskTitle, taskDate, taskTag);
+    (taskTitle, taskDate, taskTags) => {
+      console.log('> Create task -> On Confirm', taskTitle, taskDate, taskTags);
       const taskId = `task_${Date.now()}`;
-      const taskVO = new TaskVO(taskId, taskTitle, taskDate, taskTag);
+      const taskVO = new TaskVO(taskId, taskTitle, taskDate, taskTags);
 
       renderTask(taskVO);
       tasks.push(taskVO);
@@ -146,6 +157,7 @@ async function renderTaskPopup(
   domPopupContainer.classList.remove('hidden');
 
   const onClosePopup = () => {
+    document.onkeyup = null;
     domPopupContainer.children[0].remove();
     domPopupContainer.append(domSpinner);
     domPopupContainer.classList.add('hidden');
@@ -156,13 +168,13 @@ async function renderTaskPopup(
     popupTitle,
     Tags,
     confirmText,
-    (taskTitle, taskDate, taskTags) => {
+    (taskTitle, taskDate, taskTagss) => {
       console.log('Main -> renderTaskPopup: confirmCallback', {
         taskTitle,
         taskDate,
-        taskTags,
+        taskTagss,
       });
-      processDataCallback(taskTitle, taskDate, taskTags);
+      processDataCallback(taskTitle, taskDate, taskTagss);
       onClosePopup();
     },
     onClosePopup
@@ -172,15 +184,20 @@ async function renderTaskPopup(
     taskPopupInstance.taskTitle = taskVO.title;
   }
 
-  // setTimeout(() => {
-  domSpinner.remove();
+  
+  delay(1000).then(() => {
+    console.log("render 1");
+    domSpinner.remove();
   document.onkeyup = (e) => {
     if (e.key === 'Escape') {
       onClosePopup();
     }
   };
   domPopupContainer.append(taskPopupInstance.render());
-  // }, 1000);
+  });
+
+
+  console.log("render 0");
 }
 
 function saveTask() {
