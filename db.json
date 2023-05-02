@@ -1,0 +1,13 @@
+{
+	"tasks": [
+		{
+			"title": "Task 1",
+			"date": "date",
+			"tags": ["web"],
+			"id": 1
+		}
+	],
+	"profile": {
+		"name": "typicode"
+	}
+}
