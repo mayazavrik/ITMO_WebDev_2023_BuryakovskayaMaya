@@ -58,19 +58,19 @@ function mainBlock(countersmallRows , counterBlocks) {
   let i = 0;
   while(i < countersmallRows ) {
     i++;
-    let width = 100;
+    let width = 120;
     let height = 20;
     smallRows (width, height, counterBlocks, block);
   } 
 }
 
 function AllCartoons(count) {
-  let width = 8;
-  let height= 4;
+  let width = 6;
+  let height= 3;
   let i = 0;
   while(i < count) {
     i++;
     mainBlock(width, height);
   } 
 }
-AllCartoons(9);
+AllCartoons(8);
