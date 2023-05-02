@@ -1,4 +1,6 @@
 let BODY = document.querySelector('body');
+const width = 120;
+    const height = 20;
 function addBlock(width, height, row) {
  
   let changeColor = document.createElement('div');
@@ -27,9 +29,10 @@ function cubes(width, height, column, counterBlocks) {
 
   let i = 0;
   while(i < counterBlocks ) {
+    // let width = 20;
+    // let height = 20;
     i++;
-    let width = 20;
-    let height = 20;
+    
     addBlock(width, height, row);
     
   }
@@ -58,8 +61,8 @@ function mainBlock(countersmallRows , counterBlocks) {
   let i = 0;
   while(i < countersmallRows ) {
     i++;
-    let width = 120;
-    let height = 20;
+    // let width = 120;
+    // let height = 20;
     smallRows (width, height, counterBlocks, block);
   } 
 }
