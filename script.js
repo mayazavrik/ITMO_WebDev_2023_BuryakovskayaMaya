@@ -1,59 +1,67 @@
-
 let x = "";
 let y = "";
 let sign = "";
-let finish = false;
+let operationIsFinished = false;
 
-const number = ["0", "1", "2", "3", "4", "5", "6", "7", "8", "9", "0"];
+const numbersArray = ["0", "1", "2", "3", "4", "5", "6", "7", "8", "9", "0"];
 const action = ["+", "-", "X", "/"];
 const buttons = document.querySelector(".calc");
 const output = document.querySelector(".calc_result");
+function setCalcResult(result) {
+  output.innerText = result;
+}
 function clearAll() {
-  x = "";
+  x = ""; 
   y = "";
   sign = "";
-  finish = false;
+  operationIsFinished = false;
   output.innerText = '';
 }
 
-function buttonClick(event) {
+function onButtonClick(event) {
 
-  if (!event.target.classList.contains("calc_btn")) return;
-  if (event.target.classList.contains("calc_btn--reset")) return;
-  output.innerText = "";
-  const data = event.target.innerText;
+  const noButtonIsClicked = !event.target.classList.contains("calc_btn");
+  const resetButtonIsClicked = event.target.classList.contains("calc_btn--reset");
 
-  if (number.includes(data)) {
+  if (noButtonIsClicked || resetButtonIsClicked) {
+    return;
+  }
+  
+
+  setCalcResult("");
+  const buttonSymbol = event.target.innerText;
+
+  if  (numbersArray.includes(buttonSymbol)) {
     if (y === "" && sign === "") {
-      x += data;
+      x += buttonSymbol;
       console.log(x, y, sign);
-      output.innerText = x;
-    } else if (x !== "" && y !== "" && finish) {
-      y = data;
-      finish = false;
-      output.innerText = y;
+      setCalcResult(x);
+    } else if (x !== "" && y !== "" && operationIsFinished) {
+      y = buttonSymbol;
+      operationIsFinished = false;
+      setCalcResult(y);
     } else {
-      y += data;
-      output.innerText = y;
+      y += buttonSymbol;
+      setCalcResult(y);
     }
     console.log(x, y, sign);
     return;
   }
 
-  if (action.includes(data)) {
-    sign = data;
-    output.text = sign;
+  if (action.includes(buttonSymbol)) {
+    sign = buttonSymbol;
+    setCalcResult(sign);
     console.table("x, y, sign");
     return;
   }
-  if (action.includes(data)) {
-    sign = data;
-    output.innerText = sign;
+  if (action.includes(buttonSymbol)) {
+    sign = buttonSymbol;
+    setCalcResult(sign);
     console.table("x, y, sign");
     return;
   }
 
-  if (data === "=") {
+  if (buttonSymbol === "=") {
     switch (sign) {
       case "+":
         x = +x + +y;
@@ -66,7 +74,7 @@ function buttonClick(event) {
         break;
       case "/":
         if (y === "0") {
-          output.innerText = "error";
+          setCalcResult("error");
           x = "";
           y = "";
           sign = "";
@@ -79,10 +87,10 @@ function buttonClick(event) {
           return;
     }
 
-    finish = true;
+    operationIsFinished = true;
     output.innerText = x;
     console.table(x, y, sign);
   }
 }
 document.querySelector(".calc_btn--reset").onclick = clearAll;
-document.querySelector(".calc").onclick = buttonClick;
+document.querySelector(".calc").onclick = onButtonClick;
