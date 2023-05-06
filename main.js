@@ -1,51 +1,59 @@
 import 'uno.css';
 import '@unocss/reset/tailwind.css';
 import DOM from './src/constants/dom';
+import {delay} from './src/utils/timeUtils';
+import TasksModel from './src/mvc/model/TasksModel';
+import TaskVO from './src/mvc/model/VO/TaskVO';
+import TasksController from './src/mvc/controller/TasksController';
 
 const KEY_LOCAL_TASKS = 'tasks';
 
 const Tags = ['Web', 'Update', 'Design', 'Content'];
 
-class TaskVO {
-  static fromJSON(json) {
-    return new TaskVO(json.id, json.title, json.date, json.tags);
-  }
-  constructor(id, title, date, tags) {
-    this.id = id;
-    this.title = title;
-    this.date = date;
-    this.tags = tags;
-  }
-}
+
 
 const getDOM = (id) => document.getElementById(id);
 const QUERY = (container, id) => container.querySelector(`[data-id="${id}"]`);
 
 const domTemplateTask = getDOM(DOM.Template.TASK);
 const domTaskColumn = domTemplateTask.parentNode;
+
+const tasksModel = new TasksModel();
+const tasksController = new TasksController(tasksModel);
+
 domTemplateTask.removeAttribute('id');
 domTemplateTask.remove();
 
-const rawTasks = localStorage.getItem(KEY_LOCAL_TASKS);
-fetch('http://localhost:3000/tasks')
-.then((response) =>{
-return response.ok && response.json();
-}).then((rawTasks => {
-  if(rawTasks && rawTasks instanceof Object) {
-    console.log('json', rawTasks);
-    const serverTasks = rawTasks.map((json) => TaskVO.fromJSON(json));
-    serverTasks.forEach((taskVO) => renderTask((taskVO));
-    tasks.push(...serverTasks);
-  }
-});
+function renderTask(taskVO) {
+  const domTaskClone = domTemplateTask.cloneNode(true);
+  domTaskClone.dataset.id = taskVO.id;
+  QUERY(domTaskClone, DOM.Template.Task.TITLE).innerText = taskVO.title;
+  domTaskColumn.prepend(domTaskClone);
+  return domTaskClone;
+}
 
-const tasks = rawTasks
-  ? JSON.parse(rawTasks).map((json) => TaskVO.fromJSON(json))
-  : [];
-tasks.forEach((taskVO) => renderTask(taskVO));
- 
+
+async function main() {
+  tasksModel.addUpdateCallback((tasks) => {
+    domTaskColumn.innerHTML = '';
+    tasks.forEach((taskVO) => renderTask(taskVO));
+
+  });
+tasksController.retrieveTasks();
+
 
 const taskOperations = {
+  [DOM.Button.CREATE_TASK]: () => {
+    renderTaskPopup(
+      null,
+      'Create task',
+      'Create',
+      (taskTitle, taskDate, taskTags) => {
+        console.log('> Create task -> On Confirm');
+        tasksController.createTask(taskTitle, taskDate, taskTags);
+      }
+    );
+  },
   [DOM.Template.Task.BTN_DELETE]: (taskVO, domTask) => {
     renderTaskPopup(
       taskVO,
@@ -114,36 +122,14 @@ domTaskColumn.onclick = (e) => {
     taskOperation(taskVO, domTask);
   }
 };
-getDOM(DOM.Button.CREATE_TASK).onclick = () => {
-  console.log('> domPopupCreateTask', getDOM(DOM.Button.CREATE_TASK));
-  getDOM(DOM.Button.CREATE_TASK).addEventListener('click', () => {
 
-  })
-  console.log('> domPopupCreateTask.classList');
-  renderTaskPopup(
-    null,
-    'Create task',
-    'Create',
-    (taskTitle, taskDate, taskTags) => {
-      console.log('> Create task -> On Confirm', taskTitle, taskDate, taskTags);
-      const taskId = `task_${Date.now()}`;
-      const taskVO = new TaskVO(taskId, taskTitle, taskDate, taskTags);
+getDOM(DOM.Button.CREATE_TASK).addEventListener(
+  'click', (e) =>
+  taskOperations[DOM.Button.CREATE_TASK]()
+);
 
-      renderTask(taskVO);
-      tasks.push(taskVO);
+  
 
-      saveTask();
-    }
-  );
-};
-
-function renderTask(taskVO) {
-  const domTaskClone = domTemplateTask.cloneNode(true);
-  domTaskClone.dataset.id = taskVO.id;
-  QUERY(domTaskClone, DOM.Template.Task.TITLE).innerText = taskVO.title;
-  domTaskColumn.prepend(domTaskClone);
-  return domTaskClone;
-}
 
 async function renderTaskPopup(
   taskVO,
@@ -163,7 +149,7 @@ async function renderTaskPopup(
     domPopupContainer.classList.add('hidden');
   };
 
-  const TaskPopup = (await import('./src/view/popup/TaskPopup')).default;
+  const TaskPopup = (await import('./src/mvc/view/popup/TaskPopup')).default;
   const taskPopupInstance = new TaskPopup(
     popupTitle,
     Tags,
@@ -197,9 +183,13 @@ async function renderTaskPopup(
   });
 
 
-  console.log("render 0");
+  console.log('render 0');
 }
 
 function saveTask() {
   localStorage.setItem(KEY_LOCAL_TASKS, JSON.stringify(tasks));
 }
+
+}
+
+main();
