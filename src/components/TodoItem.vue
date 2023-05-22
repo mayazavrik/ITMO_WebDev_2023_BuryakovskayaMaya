@@ -1,3 +1,16 @@
+<script setup>
+defineProps( {
+    index: {
+            type: Number,
+            default: 0
+        },
+        text: {
+            type: String,
+            default: '-'
+        } 
+});
+defineEmits(['delete']);
+ </script>
 <template>
 <div>
     {{ index }}) {{ item }}
@@ -7,26 +20,3 @@
 </div>
 </template>
 
-<script>
-export default {
-    name: 'TodoItem',
-    props: {
-        index: {
-            type: Number,
-            default: 0
-        },
-        text: {
-            type: String,
-            default: '-'
-        }
-    },
-    emits: ['delete'],
-    unmonted() {
-        console.log('> TodoItem -> ')
-    }
-    
-};
-</script>
-
-<style scoped>
-</style>
