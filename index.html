@@ -3,156 +3,134 @@
   <head>
     <meta charset="UTF-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-    <title>Vite App</title>
-    <style>
-      .spinner {
-        display: inline-block;
-  width: 50px;
-  height: 50px;
-  border: 3px solid rgba(255,255,255,.3);
-  border-radius: 50%;
-  border-top-color: #fff;
-  animation: spin 1s ease-in-out infinite;
-  
-}
-
-@keyframes spin {
-  to {transform: rotate(360deg); }
-}
-
-
-      
-    </style>
+    <title>INVOICE</title>
+    <style></style>
   </head>
-  <body class="bg-teal-100/50 w-screen h-screen grid place-items-center p-12 font-sans">
-  <div
-    id="popupContainer"
-    class="hidden fixed w-screen h-screen top-0 left-0 bg-black/70 z-10 grid place-items-center"
-  >
-  <div class="spinner"> </div>
-    
-    </div>
-  </div>
-    <div class="container flex flex-row w-full h-full bg-gray-200 rounded-3xl p-4">
-      <aside class="flex flex-col min-w-[120px]">
-        <div class="flex flex-row items-center gap-x-2 py-4">
-          <i class="i-ph:cube-focus-bold text-teal-700 text-3xl"></i>
-          <span class="font-bold text-xl">Taski</span>
-        </div>
-      </aside>
-      <main class="flex flex-col w-full bg-gray-50 rounded-2xl px-4 pt-2 pb-4 gap-y-4">
-        <div class="flex flex-row justify-between items-center">
-          <div class="flex flex-col">
-            <span class="text-lg font-bold">Team tasks</span>
-          </div>
-          <div class="flex flex-col">
-            <div class="flex flex-row items-center gap-x-8">
-              <span class="text-neutral-400">Search</span>
-              <button id="btnCreateTask" class="px-4 py-2 bg-teal-600 rounded-full">
-                <span class="text-white">+ Create Task</span>
-              </button>
+  <body class="bg-gray-200">
+    <div class="font-sans" id="app">
+      <div class="container relative mx-auto bg-white content-box">
+        <article class="flex flex-col p-12">
+          <header class="flex flex-row">
+            <div class="basis-1/2">
+              <h1 class="text-[44px] text-slate-400">
+                <label for="inputInvoiceNumber">№ </label>
+                <input class="w-32 border-b-2 focus:border-slate-500 focus:text-slate-500 focus:outline-none" id="inputInvoiceNumber" pattern="[0-9]" required type="text" />
+              </h1>
             </div>
-          </div>
-        </div>
-        <div class="flex flex-row justify-between items-center">
-          <div class="flex flex-col">
-            <div class="flex flex-row items-center gap-x-1 text-neutral-400">
-              <i class="i-mdi-filter hover:text-neutral-600"></i>
-              <span class="text-xs"> Filters </span>
-              <i class="i-mdi-chevron-down hover:text-neutral-600"></i>
-            </div>
-          </div>
-          <div class="flex flex-col">
-            <div class="flex flex-row items-center gap-x-8">
-              <div class="flex flex-row text-neutral-400 gap-x-1">
-                <span class="text-xs">Sort by</span>
-                <i class="i-mdi-chevron-down hover:text-neutral-600"></i>
-              </div>
-              <div class="flex flex-row">
-                <div class="flex flex-col">
-                  <div class="flex flex-row text-neutral-400">
-                    <span class="text-xs">Group by:</span>
-                    <div class="flex flex-row">
-                      <span class="text-xs">Status</span>
-                      <i class="i-mdi-chevron-down hover:text-neutral-600"></i>
+            <div class="basis-1/2">
+              <div class="flex-col">
+                <div class="flex-row">
+                  <h1 class="text-[44px] text-black"> Invoice </h1>
+                </div>
+                <div class="flex flex-row mt-12">
+                  <div class="basis-1/2">
+                    <div class="flex-col">
+                      <h4 class="font-bold">Issued</h4>
+                      <p class="text-base"> 01 Sep, 2022 </p>
+                    </div>
+                  </div>
+                  <div class="basis-1/2">
+                    <div class="flex-col">
+                      <h4 class="font-bold">Due</h4>
+                      <p class="text-base"> 15 Sep, 2022 </p>
+                    </div>
+                  </div>
+                </div>
+                <div class="flex flex-row mt-12">
+                  <div class="basis-1/2">
+                    <div class="flex-col">
+                      <h4 class="font-bold">From</h4>
+                      <p class="text-base"> Name or Company <br> 123 Godly Street <br> Internet, 198233 <br> Saint-Petersburg, Russia <br>
+                      </p>
+                    </div>
+                  </div>
+                  <div class="basis-1/2">
+                    <div class="flex-col">
+                      <h4 class="font-bold">To</h4>
+                      <p class="text-base"> Payer Company <br> Unknown Street, 832/6 <br> Extranet TF, 99321 <br> Another City, Country <br>
+                      </p>
                     </div>
                   </div>
                 </div>
               </div>
             </div>
-          </div>
-        </div>
-        <hr />
-        <div class="flex flex-row justify-between gap-x-4">
-          <div
-            class="flex flex-col h-full w-1/2 bg-gray-200 border-1 border-gray-300/50 rounded-xl p-2"
-          >
-            <div class="flex flex-row justify-between py-1 px-1">
-              <div class="flex flex-row font-bold gap-x-1">
-                <span>To Do </span>
-                <span class="text-gray-400">2</span>
-              </div>
-              <div class="flex flex-col text-neutral-500">+ ...</div>
-            </div>
-            <div class="flex flex-row pt-2">
-              <div data-test-id="tasks-column" class="flex flex-col justify-start w-full gap-y-4 justify-between">
-                <div
-                  id="templateTask"
-                  class="flex flex-row shadow rounded-lg px-3 py-3 bg-neutral-50 border-1 border-neutral-100"
-                >
-                  <div class="flex flex-col w-full gap-y-3 ">
-                    <span data-id="templateTaskTitle" class="font-bold pointer-events-none">Layout Design</span>
-                    <div class="flex flex-row justify-between pointer-events-none ">
-                      <div class="flex flex-row gap-x-2 ">
-                        <div
-                          class="text-xs rounded-lg py-1 px-2 bg-neutral-200/60 text-neutral-600"
-                        >
-                          Update
-                        </div>
-                        <div
-                          class="text-xs rounded-lg py-1 px-2 bg-neutral-200/60 text-neutral-600"
-                        >
-                          Web
-                        </div>
-                      </div>
-                      <div class="flex flex-row items-center gap-x-1">
-                        <div class="i-mdi-clock-time-eight-outline text-sm text-green-600"></div>
-                        <div class="text-xs text-neutral-400">12 days left</div>
-                      </div>
+          </header>
+          <main class="flex flex-row mt-16">
+            <div class="flex flex-col w-full">
+              <div class="flex-row">
+                <section class="table-header-border text-sm text-gray-500 font-bold pb-1">
+                  <div class="grid grid-cols-8">
+                    <div class="col-span-4">Item</div>
+                    <div>Qty</div>
+                    <div>Cost <span class="text-gray-300">($)</span>
                     </div>
-                    <div class="flex flex-row justify-between">
-                      <div class="flex flex-row -space-x-2 pointer-events-none">
-                        <span
-                          class="w-6 h-6 rounded-full bg-green-300 border-2 border-green-500"
-                        ></span>
-                        <span
-                          class="w-6 h-6 rounded-full bg-yellow-300 border-2 border-yellow-500"
-                        >
-                        </span>
-                        <span
-                          class="grid place-items-center w-6 h-6 rounded-full bg-blue-300 border-2 border-blue-500"
-                          ><span class="text-xs font-bold text-blue-600">+2</span>
-                          </span
-                        ></div>
-                      <div class="flex flex-row gap-2">
-                        <button data-btn="btnEdit" class=" text-neutral-400 hover:text-neutral-800"> 
-                          <i class="i-material-symbols-edit block text-2xl pointer-events-none"></i>
-                          </button>
-                        <button data-btn="btnDelete" class=" text-neutral-400 hover:text-neutral-800">
-                        <i class="i-material-symbols-delete block text-2xl pointer-events-none"></i>
-                      </button>
+                    <div class="col-span-2 text-right">Total <span class="text-gray-300">($)</span>
                     </div>
+                  </div>
+                </section>
+                <div class="flex-col" id="tableWorkItems">
+                  <div id="layout-template-for-work-item" class="
+                  [&>*]:pointer-events-none
+                  grid grid-cols-8
+                  select-none
+                  items-center
+                  border-b-2 border-black focus:border-slate-500
+                  py-2
+                  hover:bg-gray-100
+                "></div>
+                  <div class="flex-row mt-12">
+                    <button class="w-8 h-8 text-lg rounded-full bg-slate-200 hover:bg-gray-300" id="btnAddWorkItem"> + </button>
+                  </div>
+                  <div class="flex flex-row justify-end mt-16">
+                    <div class="w-50%">
+                      <section class="border-top leading-8 pt-2">
+                        <div class="flex flex-col border-t-2 border-black focus:border-slate-500">
+                          <div class="flex flex-row justify-between"> Subtotal <span id="resultsSubtotalContainer">0</span>
+                          </div>
+                          <div class="flex flex-row justify-between">
+                            <span>
+                              <label for="inputDiscountPercent">Discount (</label>
+                              <input class="w-6 input-percentage text-gray-400" id="inputDiscountPercent" pattern="[0-9]{2}" required type="text" value="0" /> % ) <sup class="text-gray-400">floor</sup>
+                            </span>
+                            <span id="resultsDiscountContainer">0</span>
+                          </div>
+                          <div class="flex flex-row justify-between">
+                            <span>
+                              <label for="inputTaxPercent">Taxes (</label>
+                              <input class="w-6 input-percentage text-gray-400" id="inputTaxPercent" pattern="[0-9]{2}" required type="text" value="0" /> % ) <sup class="text-gray-400">ceil</sup>
+                            </span>
+                            <span id="resultsTaxesContainer">0</span>
+                          </div>
+                        </div>
+                      </section>
+                      <section class="border-top mt-16 leading-8 pt-2">
+                        <div class="flex flex-row justify-between border-t-2 border-black focus:border-slate-500">
+                          <b>Total</b>
+                          <span>
+                            <span id="resultsTotalContainer">0</span>
+                            <span class="text-gray-300">$</span>
+                          </span>
+                        </div>
+                      </section>
                     </div>
                   </div>
                 </div>
-                <button class="rounded-lg bg-neutral-50 w-full py-2 shadow text-neutral-500">
-                  + Add task
-                </button>
-              </div>
-            </div>
-          </div>
-        </div>
-      </main>
+          </main>
+          <footer class="flex flex-row justify-end mt-36">
+            <section class="flex-col w-50%">
+              <header class="flex flex-row justify-between">
+                <b>IBAN</b>
+                <input class="w-78 input-percentage placeholder:text-slate-200 border-b-2 focus:border-slate-500" id="inputIBANNumber" placeholder="Up to 34 alphanumeric characters" required type="text" value="" />
+              </header>
+              <main class="mt-4 text-sm text-gray-500"> Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat. Duis aute irure dolor in reprehenderit in voluptate velit esse cillum dolore eu fugiat nulla pariatur. Excepteur sint occaecat cupidatat non proident, sunt in culpa qui officia deserunt mollit anim id est laborum. </main>
+              <footer class="mt-4">
+                <div>Thank you,</div>
+                <div>Your name</div>
+              </footer>
+            </section>
+          </footer>
+        </article>
+      </div>
     </div>
     <script type="module" src="main.js"></script>
   </body>
