@@ -1,10 +1,13 @@
 <!DOCTYPE html>
 <html lang="en">
   <head>
+    <script type="module" src="main.js"></script>
     <meta charset="UTF-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
     <title>INVOICE</title>
-    <style></style>
+    <style>
+      @import url("style.css");
+    </style>
   </head>
   <body class="bg-gray-200">
     <div class="font-sans" id="app">
@@ -79,8 +82,33 @@
                   hover:bg-gray-100
                 "></div>
                   <div class="flex-row mt-12">
-                    <button class="w-8 h-8 text-lg rounded-full bg-slate-200 hover:bg-gray-300" id="btnAddWorkItem"> + </button>
+                    <button class="w-8 h-8 text-lg rounded-full bg-slate-200 hover:bg-gray-300" id="btnAddItem"> + </button>
                   </div>
+                  <div id="myModal" class="modal">
+                  <div class="popup">
+                    <div class="modal-content">
+                      <span class="delete">Delete</span>
+                      <span class="close">Close</span>
+                      <section class="table-header-border text-sm text-gray-500 font-bold pb-1">
+                        <div class="grid grid-cols-8">
+                          <div>Add</div>
+                          <div>Qty</div>
+                          <div>
+                            <label for="inputInvoiceCost">Cost <span class="text-gray-300">($)</span>
+                            </label>
+                            <input class="w-10 border-b-2 focus:border-slate-500 focus:text-slate-500 focus:outline-none" id="inputInvoiceCost" pattern="[0-9]" required type="text" />
+                          </div>
+                          <div>
+                            <label for="inputInvoiceTotal">Total <span class="text-gray-300">($)</span>
+                            </label>
+                            <input class="w-10 border-b-2 focus:border-slate-500 focus:text-slate-500 focus:outline-none" id="inputInvoiceTotal" pattern="[0-9]" required type="text" />
+                          </div>
+                          <button class="w-22 h-12 text-white text-lg rounded-5 bg-slate-200 hover:bg-gray-100" id="btnCreateItem"> Create </button>
+                        </div>
+                      </section>
+                    </div>
+                  </div>
+                </div>
                   <div class="flex flex-row justify-end mt-16">
                     <div class="w-50%">
                       <section class="border-top leading-8 pt-2">
@@ -132,6 +160,5 @@
         </article>
       </div>
     </div>
-    <script type="module" src="main.js"></script>
   </body>
 </html>
